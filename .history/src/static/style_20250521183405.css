@@ -1,0 +1,144 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    background-color: #f9f9f9;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    width: 280px; /* 稍微加宽了一点 */
+    background-color: #ffffff;
+    padding: 20px;
+    height: 100vh; /* 确保侧边栏撑满整个视窗高度 */
+    overflow-y: auto; /* 内容超出时显示滚动条 */
+    border-right: 1px solid #e0e0e0;
+    box-sizing: border-box; /* padding 和 border 不会增加宽度 */
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    font-size: 1.3em;
+    color: #333;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+#group-list, .subgroup-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.subgroup-list {
+    padding-left: 15px; /* 子分组缩进 */
+}
+
+.collection-item {
+    margin-bottom: 10px;
+}
+
+.collection-title {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #555;
+    display: block;
+    margin-bottom: 8px;
+    padding: 5px 0;
+}
+
+.subgroup-item {
+    padding: 10px 12px;
+    margin-bottom: 5px;
+    border-radius: 6px;
+    font-size: 0.95em;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.subgroup-item.clickable {
+    cursor: pointer;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.subgroup-item.clickable:hover {
+    background-color: #e0e0e0;
+}
+
+.subgroup-item.clickable.active {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+.subgroup-item.non-clickable {
+    color: #888;
+    padding: 8px 12px; /* 保持一致的内边距 */
+}
+
+.content {
+    flex-grow: 1;
+    padding: 25px;
+    overflow-y: auto; /* 内容超出时显示滚动条 */
+    height: 100vh; /* 确保内容区撑满整个视窗高度 */
+    box-sizing: border-box;
+}
+
+.content h2 {
+    margin-top: 0;
+    color: #333;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.word-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.word-item {
+    background-color: #ffffff;
+    border: 1px solid #e9e9e9;
+    padding: 18px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.word-item h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #0056b3; /* 单词颜色突出显示 */
+    font-size: 1.4em;
+}
+
+.word-item p.part-of-speech { /* 为词性添加特定类名以便样式化 */
+    margin-bottom: 10px;
+    color: #555;
+    font-style: italic;
+}
+
+.word-item .senses-list { /* 为释义列表添加类名 */
+    padding-left: 20px;
+    margin-top: 8px;
+    font-size: 0.9em;
+    color: #444;
+}
+
+.word-item .senses-list li {
+    margin-bottom: 6px;
+    line-height: 1.5;
+}
+
+.word-item .senses-list li strong { /* 翻译部分加粗 */
+    color: #111;
+}
+
+#word-display-area p { /* “此分组没有单词” 或 “没有释义” 的提示信息样式 */
+    color: #777;
+    font-style: italic;
+}

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单词辨析</title>
+    <link rel="stylesheet" href="static/style.css"> <style>
+        /* 引入更通用的字体，并设置基础字体大小 */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            line-height: 1.6; /* 增加行高以提高可读性 */
+            padding: 15px; /* 调整移动端边距 */
+            background-color: var(--page-bg, #f4f7f6); /* 添加一个页面背景色变量，如果未定义则使用默认值 */
+            color: var(--primary-text, #333); /* 基础文字颜色 */
+        }
+
+        .discrimination-container {
+            max-width: 900px;
+            margin: 20px auto; /* 调整外边距 */
+            background-color: var(--container-bg, #fff);
+            padding: 20px 30px; /* 调整内边距 */
+            border-radius: var(--border-radius-lg, 12px); /* 增加圆角 */
+            box-shadow: var(--box-shadow-medium, 0 4px 12px rgba(0,0,0,0.08)); /* 调整阴影使其更柔和 */
+        }
+
+        .discrimination-container h1 {
+            color: var(--primary-color, #007bff);
+            border-bottom: 2px solid var(--border-color, #eee); /* 加粗底部边框 */
+            padding-bottom: 15px;
+            margin-top: 0; /* 移除h1的默认顶部外边距，使其更贴近容器顶部 */
+            margin-bottom: 25px; /* 增加与下方内容的间距 */
+            font-size: 2em; /* 调整标题大小 */
+        }
+
+        .discrimination-word {
+            margin-bottom: 35px; /* 增加单词条目间的间距 */
+            padding-bottom: 25px; /* 增加单词条目内的底部内边距 */
+            border-bottom: 1px solid var(--light-bg-accent, #e9ecef);
+        }
+
+        .discrimination-word:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .discrimination-word h2 {
+            font-size: 1.6em; /* 调整二级标题大小 */
+            color: var(--accent-color, #fd7e14);
+            margin-top: 0; /* 移除默认顶部外边距 */
+            margin-bottom: 12px;
+        }
+
+        .discrimination-section-title {
+            font-weight: 600; /* 稍微加粗 */
+            color: var(--primary-text, #2c3e50);
+            margin-top: 20px;
+            margin-bottom: 8px;
+            font-size: 1.15em; /* 调整小节标题大小 */
+        }
+
+        .discrimination-content {
+            white-space: pre-wrap;
+            padding-left: 0; /* 移除左侧内边距，或根据需要调整 */
+            color: var(--secondary-text, #555);
+            line-height: 1.75; /* 进一步增加内容行高 */
+            font-size: 1em; /* 确保内容字体大小适中 */
+        }
+
+        /* 针对辨析详情内的项目进行样式调整 */
+        .discrimination-details-container .discrimination-detail-item {
+            margin-bottom: 8px; /* 增加辨析项目间距 */
+            padding: 8px;
+            background-color: var(--light-bg, #f8f9fa); /* 为每个辨析项添加一个浅色背景 */
+            border-radius: var(--border-radius-sm, 4px);
+        }
+        .discrimination-details-container .discrimination-detail-item strong {
+            color: var(--primary-color, #007bff); /* 使辨析项的key更突出 */
+        }
+        /* 如果有 <item> 标签，可以为其添加样式 */
+        .discrimination-content item, .discrimination-detail-item item {
+            display: inline-block;  /* 根据需要调整 */
+            padding: 2px 5px; 
+            background-color: #e9ecef; /* 背景色 */
+            margin: 2px; /* 间距 */
+            border-radius: 3px;
+            color: var(--text-on-accent-bg, #495057); /* 确保 item 文本颜色与背景对比清晰
+        }
+
+
+        .error-message {
+            color: var(--danger-color, red); /* 使用变量 */
+            font-weight: bold;
+            padding: 10px;
+            border: 1px solid var(--danger-color-light, #ffdddd);
+            background-color: var(--danger-bg-light, #fff5f5);
+            border-radius: var(--border-radius-sm, 4px);
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 18px; /* 调整按钮内边距 */
+            background-color: var(--primary-color, #007bff);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius-md, 6px); /* 调整按钮圆角 */
+            margin-bottom: 25px; /* 增加与标题的间距 */
+            transition: background-color var(--transition-speed, 0.2s) ease, transform 0.1s ease; /* 添加过渡效果 */
+            font-size: 0.95em;
+        }
+
+        .back-button:hover {
+            background-color: var(--primary-color-darker, #0056b3);
+            transform: translateY(-1px); /* 轻微上移效果 */
+        }
+
+        /* 响应式设计调整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .discrimination-container {
+                padding: 15px 20px; /* 减小容器内边距 */
+                margin: 10px auto;
+            }
+            .discrimination-container h1 {
+                font-size: 1.8em; /* 减小标题字体大小 */
+                margin-bottom: 20px;
+            }
+            .discrimination-word h2 {
+                font-size: 1.4em; /* 减小二级标题字体大小 */
+            }
+            .discrimination-section-title {
+                font-size: 1.1em;
+            }
+            .discrimination-content {
+                font-size: 0.95em; /* 减小内容字体大小 */
+            }
+            .back-button {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .discrimination-container {
+                padding: 15px;
+                border-radius: var(--border-radius-md, 8px); /* 移动端可以减小圆角 */
+            }
+            .discrimination-container h1 {
+                font-size: 1.6em;
+            }
+            .discrimination-word h2 {
+                font-size: 1.3em;
+            }
+            .discrimination-section-title {
+                font-size: 1.05em;
+            }
+            .discrimination-content {
+                font-size: 0.9em;
+            }
+             /* 使语义分析和辨析中的 item 块在小屏幕上更好堆叠 */
+            .discrimination-content .item, .discrimination-detail-item .item {
+                display: block; /* 让 item 独占一行，便于阅读 */
+                margin-top: 3px;
+            }
+            .discrimination-details-container .discrimination-detail-item {
+                padding: 6px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="discrimination-container">
+        <a href="/" class="back-button">&laquo; 返回主页</a>
+        <h1 id="discrimination-topic-title">单词辨析</h1>
+         <button id="goto-discrimination-btn" class="discrimination-button" style="display: none;">查看单词辨析</button>
+        <div id="discrimination-content-area">
+            <p>正在加载辨析数据...</p>
+        </div>
+    </div>
+    <script src="static/discrimination_script.js"></script>
+</body>
+</html>

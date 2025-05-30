@@ -1,0 +1,234 @@
+/* --- 基本样式 --- */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    background-color: #f9f9f9;
+    position: relative; /* 用于定位切换按钮和fixed侧边栏 */
+    overflow-x: hidden; /* 防止侧边栏滑出时出现水平滚动条 */
+}
+
+.container {
+    width: 100%;
+    min-height: 100vh;
+    /* 在桌面端通过 @media query 设置为 display: flex */
+}
+
+/* **重点：侧边栏切换按钮 (移动端) ** */
+#sidebar-toggle {
+    display: block; /* 移动端显示 */
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1001; /* 确保在侧边栏之上 */
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 1.5em; /* 增大图标大小 */
+    cursor: pointer;
+    border-radius: 5px;
+    line-height: 1; /* 确保文字垂直居中 */
+}
+
+/* --- 侧边栏 --- */
+.sidebar {
+    width: 280px;
+    background-color: #ffffff;
+    padding: 20px;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid #e0e0e0;
+    box-sizing: border-box;
+
+    /* **重点：移动端侧边栏初始状态和过渡效果** */
+    position: fixed; /* 固定定位，用于滑入滑出效果 */
+    left: 0;
+    top: 0;
+    transform: translateX(-100%); /* 初始隐藏在屏幕左侧 */
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000; /* 确保在内容之上 */
+}
+
+.sidebar.open {
+    transform: translateX(0); /* `open` 类使其滑入视图 */
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    font-size: 1.3em;
+    color: #333;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+#group-list, .subgroup-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.collection-item {
+    margin-bottom: 10px;
+}
+
+.collection-title {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #555;
+    display: block;
+    margin-bottom: 8px;
+    padding: 5px 0;
+}
+
+/* --- 内容区域 --- */
+.content {
+    flex-grow: 1; /* 在桌面端flex布局下生效 */
+    padding: 25px;
+    /* **重点：为移动端的切换按钮留出空间** */
+    padding-top: 60px; /* 避免内容被固定定位的按钮遮挡 */
+    overflow-y: auto;
+    height: 100vh;
+    box-sizing: border-box;
+    width: 100%; /* 移动端占据全部宽度 */
+}
+
+.content h2 {
+    margin-top: 0;
+    color: #333;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* --- 单词列表和条目样式 (与之前类似) --- */
+.word-list {
+    list-style-type: none;
+    padding: 0;
+}
+.word-item {
+    background-color: #ffffff;
+    border: 1px solid #e9e9e9;
+    padding: 18px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.word-item p.part-of-speech {
+    margin-bottom: 10px;
+    color: #555;
+    font-style: italic;
+}
+.word-item .senses-list {
+    padding-left: 20px;
+    margin-top: 8px;
+    font-size: 0.9em;
+    color: #444;
+}
+.word-item .senses-list li {
+    margin-bottom: 6px;
+    line-height: 1.5;
+}
+.word-item .senses-list li strong {
+    color: #111;
+}
+#word-display-area p {
+    color: #777;
+    font-style: italic;
+}
+
+/* --- 侧边栏折叠样式 (与之前相同) --- */
+.collection-title.collapsible {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    padding-left: 1.5em;
+}
+.collection-title.collapsible::before {
+    content: '▶';
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.8em;
+    color: #333;
+}
+.collection-title.collapsible.expanded::before {
+    content: '▼';
+}
+.subgroup-list {
+    display: none;
+    padding-left: 20px;
+}
+.subgroup-list.expanded {
+    display: block;
+}
+.subgroup-item {
+    padding: 10px 12px;
+    margin-bottom: 5px;
+    border-radius: 6px;
+    font-size: 0.95em;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+.subgroup-item.clickable {
+    cursor: pointer;
+    background-color: #f0f0f0;
+    color: #333;
+}
+.subgroup-item.clickable:hover {
+    background-color: #e0e0e0;
+}
+.subgroup-item.clickable.active {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+.subgroup-item.non-clickable {
+    color: #888;
+    padding: 8px 12px;
+}
+
+/* --- 单词显示区域的单词隐藏/显示样式 (与之前相同) --- */
+.word-header-container {
+    cursor: pointer;
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 8px;
+}
+.word-header-container .english-word {
+    font-size: 1.4em;
+    color: #0056b3;
+    font-weight: bold;
+}
+.word-header-container .english-word.hidden {
+    display: none;
+}
+.word-header-container .reveal-word-prompt {
+    font-size: 0.9em;
+    color: #007bff;
+    text-decoration: underline;
+    margin-left: 10px;
+    user-select: none;
+}
+
+
+/* **重点：桌面端样式 (屏幕宽度 >= 768px)** */
+@media (min-width: 768px) {
+    #sidebar-toggle {
+        display: none; /* 桌面端隐藏切换按钮 */
+    }
+
+    .container {
+        display: flex; /* 桌面端使用flex布局 */
+    }
+
+    .sidebar {
+        position: static; /* 恢复文档流中的静态定位 */
+        transform: translateX(0); /* 始终可见 */
+        height: 100vh;
+        /* transition: none; optional: remove transition for static positioning */
+    }
+
+    .content {
+        padding-top: 25px; /* 恢复正常的内边距 */
+        /* margin-left is not needed due to flex container */
+        /* width will be calculated by flex-grow */
+    }
+}

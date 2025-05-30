@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单词辨析学习</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .word-title-blurred { filter: blur(5px); cursor: pointer; user-select: none; transition: filter 0.2s ease-in-out; }
+        .word-title-blurred:hover { filter: blur(3px); }
+        .collapsible-toggle > .arrow-icon { transition: transform 0.2s ease-in-out; display: inline-block; }
+        .collapsible-toggle.open > .arrow-icon { transform: rotate(90deg); } /* This might be handled by fa-chevron-down directly */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #a0aec0; border-radius: 10px; } 
+        ::-webkit-scrollbar-thumb:hover { background: #718096; } 
+        .sidebar-transition { transition: transform 0.3s ease-in-out; }
+        .main-content-area { height: 100vh; }
+        .sidebar-link-active {
+            background-color: #ebf8ff; 
+            color: #2b6cb0; 
+            font-weight: 600;
+        }
+        .review-mode-vernacular- увеличенный-текст p { 
+            font-size: 1.125rem; 
+            line-height: 1.75rem; 
+        }
+        .section-to-hide-in-review {}
+        .section-vernacular-description, .section-semantic-analysis {}
+        /* Add prose styling capabilities if needed broadly, or rely on Tailwind's CDN */
+        /* For example, if you use Tailwind Typography plugin: */
+        /* .prose { ... } or ensure your CDN link includes typography */
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans antialiased">
+
+    <div class="flex h-screen overflow-hidden">
+        <button id="sidebar-toggle" aria-label="Toggle sidebar" class="lg:hidden fixed top-4 left-4 z-30 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+            <i class="fas fa-bars fa-fw"></i>
+        </button>
+
+        <aside id="sidebar" class="sidebar-transition bg-white w-64 lg:w-72 fixed lg:static inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 z-20 shadow-xl overflow-y-auto border-r border-gray-200 p-5">
+            <div class="flex justify-between items-center mb-6 lg:mb-8">
+                <h1 class="text-2xl font-bold text-blue-700">单词分组</h1>
+                <button id="sidebar-close" aria-label="Close sidebar" class="lg:hidden text-gray-500 hover:text-gray-700 p-2 -mr-2 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded">
+                    <i class="fas fa-times fa-fw text-xl"></i>
+                </button>
+            </div>
+             <div class="mb-4">
+                <input type="text" id="search-input" placeholder="搜索分组/单词..." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm">
+            </div>
+            <nav>
+                <ul id="group-list" class="space-y-1">
+                    <li class="p-3 text-sm text-gray-500">加载分组中...</li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="flex-1 p-4 md:p-8 overflow-y-auto main-content-area">
+            <div class="discrimination-container max-w-5xl mx-auto">
+                <header class="page-header flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 pb-4 border-b border-gray-300">
+                    <h1 id="discrimination-topic-title" class="text-2xl md:text-3xl font-semibold text-gray-700 mb-4 sm:mb-0">单词辨析</h1>
+                    <div class="button-group flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 mt-3 sm:mt-0">
+                        <a id="back-to-home-btn" href="/" class="back-button bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg shadow-md hover:shadow-lg transition-all duration-150 ease-in-out transform hover:scale-105 flex items-center justify-center text-sm">
+                            <i class="fas fa-arrow-left mr-2 fa-fw"></i> 返回主页
+                        </a>
+                        <button id="toggle-review-btn" class="review-button hidden bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 px-5 rounded-lg shadow-md hover:shadow-lg transition-all duration-150 ease-in-out transform hover:scale-105 items-center justify-center text-sm">
+                            <i class="fas fa-book-open mr-2 fa-fw"></i> 进入背诵模式
+                        </button>
+                    </div>
+                </header>
+
+                <div id="discrimination-content-area" class="space-y-8 mt-6">
+                     <div class="text-center py-12 px-6 bg-white rounded-xl shadow-lg">
+                        <i class="fas fa-spinner fa-spin text-5xl text-blue-500 mb-4"></i>
+                        <p class="text-gray-500 text-lg">正在加载辨析数据...</p>
+                    </div>
+                </div>
+
+                <div id="error-message-area" class="mt-6">
+                    </div>
+            </div>
+        </main>
+    </div>
+
+    <input type="hidden" id="current-topic-id" value="{{ topicId if topicId else '' }}">
+    <script src="/static/script.js"></script> 
+    <script src="/static/discrimination_script.js"></script>
+</body>
+</html>

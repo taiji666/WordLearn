@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单词辨析 - Tailwind 重构</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for elements not easily handled by pure Tailwind or for complex states if needed */
+        /* For example, the blur effect might still need a specific class if JS toggles it */
+        .word-title-blurred {
+            filter: blur(5px);
+            cursor: pointer;
+            user-select: none;
+        }
+        /* Arrow for collapsible sections */
+        .collapsible-toggle::before {
+            content: '▶';
+            font-size: 0.8em;
+            margin-right: 8px;
+            transition: transform 0.2s ease-in-out;
+            display: inline-block; /* Ensure transform works */
+        }
+        .collapsible-toggle.open::before {
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans p-4 md:p-8">
+
+    <div class="discrimination-container max-w-4xl mx-auto bg-white p-6 md:p-10 rounded-xl shadow-xl">
+        <header class="page-header flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-6 border-b border-gray-200">
+            <h1 id="discrimination-topic-title" class="text-3xl md:text-4xl font-bold text-gray-700 mb-4 sm:mb-0">单词辨析</h1>
+            <div class="button-group flex space-x-3">
+                <a href="#" class="back-button bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg shadow-md transition-all duration-150 ease-in-out transform hover:scale-105">
+                    &laquo; 返回主页
+                </a>
+                <button id="toggle-review-btn" class="review-button bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-5 rounded-lg shadow-md transition-all duration-150 ease-in-out transform hover:scale-105">
+                    进入背诵模式
+                </button>
+            </div>
+        </header>
+
+        <div id="discrimination-content-area" class="space-y-8">
+            <div class="discrimination-word bg-white border border-gray-200 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <h2 class="word-title text-2xl md:text-3xl font-semibold text-orange-600 mb-4 transition-all duration-300 ease-in-out" data-original-word="示例单词一 (Word One)">
+                    示例单词一 (Word One)
+                </h2>
+
+                <div class="tongsu-miaoshu-container bg-gray-50 p-4 rounded-md mb-6 border-l-4 border-blue-500">
+                    <h3 class="discrimination-section-title text-sm font-semibold text-blue-600 mb-1 uppercase tracking-wider">通俗描述</h3>
+                    <p class="discrimination-content text-gray-600 text-base">
+                        这是一个对 "示例单词一" 的简单易懂的解释，帮助快速理解其核心含义。
+                    </p>
+                </div>
+
+                <div class="word-details-section review-collapsible-section mb-6">
+                    <h3 class="discrimination-section-title collapsible-toggle text-xl font-semibold text-gray-700 mb-3 cursor-pointer hover:text-blue-600 transition-colors">
+                        词义辨析
+                    </h3>
+                    <div class="discrimination-content-collapsible space-y-3 pl-1 text-gray-700">
+                        <p><strong>主要含义:</strong> <span class="item-tag">描述其主要意思和用法。</span></p>
+                        <p><strong>细微差别:</strong> <span class="item-tag">与其他相似词汇的关键区别点。</span></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>适用于 <span class="item-tag">特定场景A</span>。</li>
+                            <li>不适用于 <span class="item-tag">特定场景B</span>。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="semantic-analysis-section review-collapsible-section mb-6">
+                    <h3 class="discrimination-section-title collapsible-toggle text-xl font-semibold text-gray-700 mb-3 cursor-pointer hover:text-blue-600 transition-colors">
+                        语义分析
+                    </h3>
+                    <div class="discrimination-content-collapsible bg-indigo-50 p-4 rounded-md text-gray-800 leading-relaxed">
+                        <p><strong class="text-indigo-600 font-semibold">词性:</strong> <span class="semantic-item-tag">名词</span></p>
+                        <p><strong class="text-indigo-600 font-semibold">感情色彩:</strong> <span class="semantic-item-tag">中性</span></p>
+                        <p><strong class="text-indigo-600 font-semibold">常见搭配:</strong> <span class="semantic-item-tag">示例搭配</span>, <span class="semantic-item-tag">另一个搭配</span></p>
+                    </div>
+                </div>
+
+                <div class="word-details-section review-collapsible-section">
+                    <h3 class="discrimination-section-title collapsible-toggle text-xl font-semibold text-gray-700 mb-3 cursor-pointer hover:text-blue-600 transition-colors">
+                        例句
+                    </h3>
+                    <ul class="discrimination-content-collapsible list-disc pl-5 space-y-2 text-gray-700">
+                        <li>这个 <span class="item-tag">示例单词一</span> 在句子中是如何使用的。</li>
+                        <li>另一个包含 <span class="item-tag">示例单词一</span> 的例句，展示不同语境。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="discrimination-word bg-white border border-gray-200 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <h2 class="word-title text-2xl md:text-3xl font-semibold text-orange-600 mb-4 transition-all duration-300 ease-in-out" data-original-word="示例单词二 (Word Two)">
+                    示例单词二 (Word Two)
+                </h2>
+                 <div class="tongsu-miaoshu-container bg-gray-50 p-4 rounded-md mb-6 border-l-4 border-blue-500">
+                    <h3 class="discrimination-section-title text-sm font-semibold text-blue-600 mb-1 uppercase tracking-wider">通俗描述</h3>
+                    <p class="discrimination-content text-gray-600 text-base">
+                        这是 "示例单词二" 的简洁描述，突出其特点。
+                    </p>
+                </div>
+                <div class="word-details-section review-collapsible-section">
+                     <h3 class="discrimination-section-title collapsible-toggle text-xl font-semibold text-gray-700 mb-3 cursor-pointer hover:text-blue-600 transition-colors">
+                        要点
+                    </h3>
+                    <p class="discrimination-content-collapsible text-gray-700">关于 "示例单词二" 的更多细节和用法说明。</p>
+                </div>
+            </div>
+            </div>
+         <div id="error-message-area" class="mt-6">
+            <!-- <div class="error-message bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative" role="alert">
+                <strong class="font-bold">错误!</strong>
+                <span class="block sm:inline">加载数据失败，请稍后再试。</span>
+            </div> -->
+        </div>
+    </div>
+
+    <script>
+        // Basic JavaScript for interactions
+        document.addEventListener('DOMContentLoaded', function () {
+            const discriminationContentArea = document.getElementById('discrimination-content-area');
+            const toggleReviewBtn = document.getElementById('toggle-review-btn');
+            let isReviewMode = false;
+
+            // Style for general items (辨析等其他地方)
+            const itemTagClasses = ['inline-block', 'bg-gray-200', 'text-gray-700', 'px-2', 'py-1', 'text-sm', 'rounded-md', 'font-mono', 'mx-0.5', 'my-0.5'];
+            // Style for semantic analysis items
+            const semanticItemTagClasses = ['inline-block', 'bg-indigo-100', 'text-indigo-700', 'px-3', 'py-1', 'text-sm', 'rounded-md', 'font-sans', 'mx-0.5', 'my-0.5'];
+
+            function applyTagStyles() {
+                // Apply styles to general item tags
+                const items = discriminationContentArea.querySelectorAll('.item-tag');
+                items.forEach(item => {
+                    item.classList.add(...itemTagClasses);
+                });
+
+                // Apply styles to semantic analysis item tags
+                const semanticItems = discriminationContentArea.querySelectorAll('.semantic-item-tag');
+                semanticItems.forEach(item => {
+                    item.classList.add(...semanticItemTagClasses);
+                });
+            }
+            
+            // Initial application of styles
+            applyTagStyles();
+
+            // If new content is loaded dynamically, call applyTagStyles() again.
+            // For example, if using fetch to load data:
+            // fetch('data.json').then(...).then(() => {
+            //    discriminationContentArea.innerHTML = newContent;
+            //    applyTagStyles();
+            //    initializeCollapsibles();
+            //    initializeWordTitleBlur();
+            // });
+
+
+            // Toggle Review Mode
+            toggleReviewBtn.addEventListener('click', () => {
+                isReviewMode = !isReviewMode;
+                document.querySelectorAll('.word-title').forEach(title => {
+                    if (isReviewMode) {
+                        title.classList.add('word-title-blurred');
+                        title.textContent = '点击显示'; // Or keep original text blurred
+                    } else {
+                        title.classList.remove('word-title-blurred');
+                        title.textContent = title.dataset.originalWord;
+                    }
+                });
+
+                document.querySelectorAll('.review-collapsible-section .discrimination-content-collapsible').forEach(content => {
+                    if (isReviewMode) {
+                        content.classList.add('hidden');
+                        content.previousElementSibling.classList.remove('open'); // Reset arrow
+                    } else {
+                        content.classList.remove('hidden');
+                         content.previousElementSibling.classList.remove('open'); // Ensure sections are collapsed by default unless clicked
+                    }
+                });
+                toggleReviewBtn.textContent = isReviewMode ? '退出背诵模式' : '进入背诵模式';
+                if(isReviewMode) {
+                    toggleReviewBtn.classList.replace('bg-orange-500', 'bg-green-500');
+                    toggleReviewBtn.classList.replace('hover:bg-orange-600', 'hover:bg-green-600');
+                } else {
+                    toggleReviewBtn.classList.replace('bg-green-500', 'bg-orange-500');
+                    toggleReviewBtn.classList.replace('hover:bg-green-600', 'hover:bg-orange-600');
+                }
+            });
+
+            // Word Title Click to Unblur (in review mode)
+            function initializeWordTitleBlur() {
+                discriminationContentArea.addEventListener('click', function(event) {
+                    const title = event.target.closest('.word-title');
+                    if (title && isReviewMode && title.classList.contains('word-title-blurred')) {
+                        title.classList.remove('word-title-blurred');
+                        title.textContent = title.dataset.originalWord;
+                    }
+                });
+            }
+            initializeWordTitleBlur();
+
+
+            // Collapsible Sections
+            function initializeCollapsibles() {
+                discriminationContentArea.addEventListener('click', function(event) {
+                    const toggle = event.target.closest('.collapsible-toggle');
+                    if (toggle) {
+                        const content = toggle.nextElementSibling;
+                        if (content && content.classList.contains('discrimination-content-collapsible')) {
+                            content.classList.toggle('hidden');
+                            toggle.classList.toggle('open');
+                        }
+                    }
+                });
+            }
+            initializeCollapsibles();
+            
+            // Initially collapse all sections for a cleaner start if not in review mode
+            // Or, if you prefer them open by default, remove this block.
+            document.querySelectorAll('.review-collapsible-section .discrimination-content-collapsible').forEach(content => {
+                content.classList.add('hidden');
+                content.previousElementSibling.classList.remove('open');
+            });
+
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单词辨析 - Bulma 重构</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    <style>
+        /* Custom style for the blur effect */
+        .word-title-blurred {
+            filter: blur(5px);
+            cursor: pointer;
+            user-select: none;
+            transition: filter 0.2s ease-in-out;
+        }
+        .word-title-blurred:hover {
+            filter: blur(3px);
+        }
+
+        /* Arrow for collapsible sections */
+        .collapsible-toggle::before {
+            content: '▶';
+            font-size: 0.8em;
+            margin-right: 8px;
+            transition: transform 0.2s ease-in-out;
+            display: inline-block;
+            vertical-align: middle; /* Align arrow with text */
+        }
+        .collapsible-toggle.is-active::before { /* Using is-active for open state */
+            transform: rotate(90deg);
+        }
+
+        /* Custom styling for tongsu-miaoshu to have a left border */
+        .tongsu-miaoshu-container {
+            border-left: 4px solid #3273dc; /* Bulma's $info color */
+            padding-left: 1em;
+            background-color: #f5f5f5; /* A light grey background */
+            border-radius: 4px;
+        }
+        /* Ensure semantic analysis items are spaced nicely */
+        .semantic-analysis-content p {
+            margin-bottom: 0.5em;
+        }
+        .semantic-analysis-content p:last-child {
+            margin-bottom: 0;
+        }
+        /* Add some bottom margin to each word card */
+        .discrimination-word-card {
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <div class="level mb-6 pb-5" style="border-bottom: 1px solid #dbdbdb;">
+                <div class="level-left">
+                    <div class="level-item">
+                        <h1 id="discrimination-topic-title" class="title is-2 has-text-grey-darker">单词辨析</h1>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div class="buttons">
+                            <a href="#" class="button is-link">
+                                &laquo; 返回主页
+                            </a>
+                            <button id="toggle-review-btn" class="button is-warning" style="display: none;">
+                                进入背诵模式
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="discrimination-content-area">
+                <p class="has-text-grey">正在加载辨析数据...</p>
+            </div>
+
+             <div id="error-message-area" class="mt-5">
+                <!-- Example:
+                <div class="notification is-danger">
+                    <button class="delete"></button>
+                    <strong>错误!</strong> 加载数据失败，请稍后再试。
+                </div>
+                -->
+            </div>
+        </div>
+    </section>
+
+    <script src="static/discrimination_script.js" defer></script>
+</body>
+</html>

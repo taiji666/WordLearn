@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单词辨析</title>
+    <style>
+     
+        .error-message {
+            color: var(--danger-color);
+            font-weight: bold;
+            padding: 12px;
+            border: 1px solid var(--danger-color-light);
+            background-color: var(--danger-bg-light);
+            border-radius: var(--border-radius-md);
+            text-align: center;
+        }
+
+        .button-group { display: flex; gap: 10px; }
+        .back-button, .review-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius-md);
+            transition: background-color var(--transition-speed) ease, transform 0.1s ease;
+            font-size: 0.95em;
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--box-shadow-soft);
+        }
+        .review-button { background-color: var(--accent-color); }
+        .back-button:hover, .review-button:hover {
+            background-color: var(--primary-color-darker);
+            transform: translateY(-2px);
+        }
+        .review-button:hover { background-color: #e06f10; }
+
+
+        /* --- 背诵模式 CSS (可折叠部分) --- */
+        /* 移除旧的 .word-title-review.hidden-word 和 ::before 相关样式，因为已被新的模糊效果取代 */
+        /*
+        .word-title-review.hidden-word { ... }
+        .word-title-review.hidden-word::before { ... }
+        */
+
+        .discrimination-section-title.collapsible-toggle {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            transition: color var(--transition-speed) ease;
+        }
+        .discrimination-section-title.collapsible-toggle:hover { color: var(--primary-color); }
+        .discrimination-section-title.collapsible-toggle::before {
+            content: '▶';
+            font-size: 0.8em;
+            margin-right: 8px;
+            transition: transform var(--transition-speed) ease;
+        }
+        .review-collapsible-section:not(.collapsed) > .discrimination-section-title.collapsible-toggle::before { content: '▼'; }
+        /* .review-collapsible-section.collapsed > .discrimination-section-title.collapsible-toggle::before { transform: rotate(-90deg); } */ /* 可选的旋转效果 */
+
+
+        .review-collapsible-section.collapsed > *:not(.discrimination-section-title) {
+            display: none;
+        }
+
+
+        /* 响应式设计调整 */
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            .discrimination-container { padding: 20px; }
+            .page-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .discrimination-container h1#discrimination-topic-title { font-size: 1.9em; }
+            .discrimination-word h2 { font-size: 1.6em; }
+            .word-details-section .discrimination-section-title { font-size: 1.1em; }
+            .discrimination-content, .tongsu-miaoshu-container .discrimination-content { font-size: 0.9em; }
+            .semantic-analysis-section > .discrimination-content { padding: 12px 15px; line-height: 1.8; } /* 响应式调整 */
+            .back-button, .review-button { padding: 9px 16px; font-size: 0.9em; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .discrimination-container { padding: 15px; border-radius: var(--border-radius-md); }
+            .page-header { gap: 10px; padding-bottom: 15px; margin-bottom: 20px;}
+            .discrimination-container h1#discrimination-topic-title { font-size: 1.6em; }
+            .discrimination-word { padding: 15px; margin-bottom: 20px; }
+            .discrimination-word h2 { font-size: 1.4em; }
+            .tongsu-miaoshu-container { padding: 10px 12px; }
+            .word-details-section .discrimination-section-title { font-size: 1.05em; }
+            .discrimination-content, .tongsu-miaoshu-container .discrimination-content { font-size: 0.88em; }
+            .semantic-analysis-section > .discrimination-content { padding: 10px 12px; line-height: 1.75; font-size: 0.88em; } /* 响应式调整 */
+
+            .discrimination-content item, .discrimination-detail-item item { display: block; margin-top: 4px; margin-bottom: 4px; }
+            .discrimination-details-container .discrimination-detail-item { padding: 8px; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="discrimination-container">
+        <div class="page-header">
+            <h1 id="discrimination-topic-title">单词辨析</h1>
+            <div class="button-group">
+                <a href="/" class="back-button">&laquo; 返回主页</a>
+                <button id="goto-review-btn" class="review-button" style="display: none;">背诵单词</button>
+            </div>
+        </div>
+        <div id="discrimination-content-area">
+            <p>正在加载辨析数据...</p>
+        </div>
+    </div>
+    <script src="static/discrimination_script.js"></script>
+    </body>
+</html>

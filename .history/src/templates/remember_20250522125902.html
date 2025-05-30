@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单词背诵</title>
+    <link rel="stylesheet" href="static/style.css">
+    <!-- Inline styles from discrimination_page.html should be moved to style.css for commonality -->
+    <style>
+        /* Specific styles for remember page, if any, or use common styles */
+        .remember-word { /* Copied from discrimination-word, adjust if needed */
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--light-bg-accent, #e9ecef);
+        }
+        .remember-word:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .remember-word h2 {
+            font-size: 1.6em;
+            color: var(--accent-color, #fd7e14); /* Or a different color for remember */
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+        /* Styles for main-meaning-title, all-meaning-content etc. as in your remember.js */
+        .main-meaning-title, .all-meaning-title, .discribe-title, .discrimination-section-title {
+            font-weight: 600;
+            color: var(--primary-text, #2c3e50);
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+        .main-meaning-content, .all-meaning-content, .discribe-content, .discrimination-content {
+            white-space: pre-wrap;
+            padding-left: 0;
+            color: var(--secondary-text, #555);
+            line-height: 1.7;
+            font-size: 1em;
+        }
+        .all-meaning-content ul {
+            padding-left: 20px; margin-top: 5px;
+        }
+         .discrimination-content item, .discrimination-detail-item item { /* Re-use from discrimination */
+             display: inline-block;
+             padding: 2px 5px;
+             background-color: #e9ecef;
+             margin: 2px;
+             border-radius: 3px;
+             color: var(--text-on-accent-bg, #495057);
+         }
+        /* ... any other specific styles for remember page ... */
+    </style>
+</head>
+<body>
+    <button id="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
+
+    <div class="container">
+        <aside class="sidebar"> <!-- COMMON SIDEBAR HTML -->
+            <h2>单词分组</h2>
+            <ul id="group-list">
+                <!-- Sidebar will be populated by script.js -->
+            </ul>
+        </aside>
+
+        <main class="content">
+            <a href="/" class="back-button">« 返回分组列表</a>
+            <h1 id="discrimination-topic-title">单词背诵</h1> <!-- Title will be updated by JS -->
+            <div id="discrimination-content-area">
+                <p>正在加载背诵数据...</p>
+            </div>
+        </main>
+    </div>
+
+    <script src="static/script.js"></script> <!-- For sidebar -->
+    <script src="static/remember.js"></script> <!-- For main content -->
+</body>
+</html>

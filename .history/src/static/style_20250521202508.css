@@ -1,0 +1,408 @@
+/* :root 定义全局 CSS 变量 */
+:root {
+    --body-bg: #f4f7f6; /* 更柔和的页面背景色 */
+    --container-bg: #ffffff;
+    --sidebar-bg: #ffffff;
+    --card-bg: #ffffff;
+
+    --primary-text: #2c3e50; /* 主要文字颜色，深蓝灰色 */
+    --secondary-text: #7f8c8d; /* 次要文字颜色，灰色 */
+    --subtle-text: #95a5a6; /* 更浅的提示性文字 */
+
+    --primary-color: #3498db; /* 主色调，清新的蓝色 */
+    --primary-color-darker: #2980b9; /* 主色调的深色版，用于hover等 */
+    --accent-color: #2ecc71; /* 强调色，绿色，用于单词等 */
+    --accent-color-darker: #27ae60; /* 强调色的深色版 */
+
+    --border-color: #e0e6ed; /* 边框颜色 */
+    --light-bg-accent: #ecf0f1; /* 浅色背景强调，如词性背景 */
+
+    --sidebar-width: 280px;
+    --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+    --box-shadow-light: 0 1px 3px rgba(0,0,0,0.05);
+    --box-shadow-medium: 0 4px 12px rgba(0,0,0,0.1);
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+
+    --transition-speed: 0.25s;
+}
+
+/* --- 基本样式 --- */
+body {
+    font-family: var(--font-family-sans-serif);
+    margin: 0;
+    background-color: var(--body-bg);
+    color: var(--primary-text);
+    line-height: 1.6;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.container {
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* --- 侧边栏切换按钮 (移动端) --- */
+#sidebar-toggle {
+    display: block;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1001;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    font-size: 1.4em;
+    cursor: pointer;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow-medium);
+    transition: background-color var(--transition-speed) ease;
+    line-height: 1;
+}
+
+#sidebar-toggle:hover {
+    background-color: var(--primary-color-darker);
+}
+
+/* --- 侧边栏 --- */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-bg);
+    padding: 25px 20px;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid var(--border-color);
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: translateX(-100%);
+    transition: transform var(--transition-speed) ease-in-out;
+    z-index: 1000;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+    box-shadow: 5px 0 15px rgba(0,0,0,0.1); /* 移动端打开时给一点阴影 */
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: var(--primary-color);
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+}
+
+#group-list, .subgroup-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.collection-item {
+    margin-bottom: 12px;
+}
+
+.collection-title {
+    font-weight: 600;
+    font-size: 1.15em;
+    color: var(--primary-text);
+    display: block;
+    margin-bottom: 10px;
+    padding: 8px 5px;
+    border-radius: var(--border-radius-sm);
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+.collection-title.collapsible {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    padding-left: 2em;
+}
+
+.collection-title.collapsible:hover {
+    background-color: var(--light-bg-accent);
+}
+
+.collection-title.collapsible::before {
+    content: '▶';
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.8em;
+    color: var(--primary-color);
+    transition: transform var(--transition-speed) ease;
+}
+
+.collection-title.collapsible.expanded::before {
+    transform: translateY(-50%) rotate(90deg);
+}
+
+.subgroup-list {
+    display: none;
+    padding-left: 15px;
+    margin-top: 5px;
+    border-left: 2px solid var(--light-bg-accent);
+}
+
+.subgroup-list.expanded {
+    display: block;
+}
+
+.subgroup-item {
+    padding: 10px 15px;
+    margin-bottom: 6px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.95em;
+    color: var(--secondary-text);
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, transform var(--transition-speed) ease;
+    position: relative;
+}
+/* 为ID文本（如果用span包裹）提供样式参考 */
+/* .subgroup-item .item-id, .collection-title .item-id {
+    font-size: 0.8em;
+    color: var(--subtle-text);
+    margin-left: 8px;
+    font-weight: normal;
+} */
+
+
+.subgroup-item.clickable {
+    cursor: pointer;
+    background-color: transparent;
+    color: var(--primary-text);
+}
+
+.subgroup-item.clickable:hover {
+    background-color: var(--light-bg-accent);
+    color: var(--primary-color-darker);
+    transform: translateX(3px);
+}
+
+.subgroup-item.clickable.active {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    box-shadow: var(--box-shadow-light);
+}
+
+.subgroup-item.clickable.active:hover {
+    color: white;
+    transform: none;
+}
+
+
+.subgroup-item.non-clickable {
+    color: var(--subtle-text);
+    padding: 8px 15px;
+}
+
+/* --- 内容区域 --- */
+.content {
+    flex-grow: 1;
+    padding: 30px;
+    padding-top: 80px;
+    overflow-y: auto;
+    height: 100vh;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+#selected-group-title {
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: var(--primary-text);
+    font-size: 1.8em;
+    font-weight: 600;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* --- 单词列表和条目样式 --- */
+.word-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.word-item {
+    background-color: var(--card-bg);
+    border: none;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 3px 10px rgba(44, 62, 80, 0.08), 0 0 1px rgba(44, 62, 80, 0.05);
+    transition: box-shadow var(--transition-speed) ease;
+}
+
+.word-item:hover {
+    box-shadow: 0 6px 15px rgba(44, 62, 80, 0.1), 0 0 1px rgba(44, 62, 80, 0.07);
+}
+
+.word-header-container {
+    cursor: pointer;
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 16px;
+}
+
+.word-header-container .english-word {
+    font-size: 2em;
+    color: var(--primary-text);
+    font-weight: 700;
+    line-height: 1.2;
+    transition: color var(--transition-speed) ease;
+}
+
+.word-header-container .english-word.hidden {
+    display: none;
+}
+
+.word-header-container .reveal-word-prompt {
+    font-size: 0.8em;
+    color: var(--primary-color);
+    text-decoration: none;
+    margin-left: 12px;
+    background-color: transparent;
+    padding: 4px 10px;
+    border: 1px solid var(--primary-color);
+    border-radius: var(--border-radius-sm);
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.word-header-container:hover .reveal-word-prompt {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.word-item p.part-of-speech {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--secondary-text);
+    font-style: italic;
+    background-color: var(--light-bg-accent);
+    padding: 5px 12px;
+    border-radius: var(--border-radius-md);
+    display: inline-block;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.word-item .senses-list {
+    padding-left: 0;
+    margin-top: 0;
+    list-style-type: none;
+    counter-reset: sense-counter;
+}
+
+.word-item .senses-list li {
+    padding: 16px 0 16px 3em;
+    margin-bottom: 0;
+    line-height: 2.7;
+    position: relative;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--primary-text);
+    font-size: 1.5em;
+}
+
+.word-item .senses-list li:first-child {
+    padding-top: 12px;
+}
+.word-item .senses-list li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.word-item .senses-list li::before {
+    counter-increment: sense-counter;
+    content: counter(sense-counter) ".";
+    position: absolute;
+    left: 0;
+    top: 16px;
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 1em;
+    width: 2.2em;
+    text-align: right;
+    padding-right: 0.8em;
+}
+
+
+.word-item .senses-list li strong {
+    display: block;
+    font-size: 1.1em;
+    color: var(--accent-color);
+    font-weight: 600;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+.word-item .senses-list li definition {
+    display: block;
+    font-size: 1.em;
+    color: var(--accent-color);
+    font-weight: 600;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+#word-display-area > p {
+    color: var(--secondary-text);
+    font-style: normal;
+    padding: 30px;
+    background-color: var(--container-bg);
+    border-radius: var(--border-radius-md);
+    text-align: center;
+    border: 1px dashed var(--border-color);
+    margin-top: 20px;
+    font-size: 1em;
+}
+
+/* --- 响应式设计 (桌面端) --- */
+@media (min-width: 768px) {
+    #sidebar-toggle {
+        display: none;
+    }
+
+    .container {
+        display: flex;
+    }
+
+    .sidebar {
+        position: static;
+        transform: translateX(0);
+        height: 100vh;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.05); /* 桌面端侧边栏固定阴影 */
+        transition: none; /* 移除移动端的 transform 过渡 */
+    }
+    /* .sidebar.open 的特定移动端阴影在桌面端不再适用，由上面的 .sidebar 样式覆盖 */
+
+    .content {
+        padding-top: 30px;
+    }
+}
+
+/* --- 自定义滚动条 (可选, WebKit内核浏览器) --- */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--light-bg-accent);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}

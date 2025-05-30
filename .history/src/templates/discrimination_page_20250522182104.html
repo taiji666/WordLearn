@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单词辨析</title>
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --primary-color-darker: #0056b3;
+            --accent-color: #fd7e14;
+            --primary-text: #333;
+            --secondary-text: #555;
+            --border-color: #dee2e6;
+            --light-bg: #f8f9fa;
+            --light-bg-accent: #e9ecef; /* 全局 item 和其他元素的浅色背景 */
+            --page-bg: #f4f7f6;
+            --container-bg: #ffffff;
+            --card-bg: #ffffff;
+            --danger-color: #dc3545;
+            --danger-color-light: #f8d7da;
+            --danger-bg-light: #f5c6cb;
+            --text-on-accent-bg: #495057; /* 用于在 --light-bg-accent 上的文字颜色 */
+            
+            --semantic-analysis-section-bg: #f9f9f9; /* 上一步骤中定义的语义分析区块背景 */
+            /* --- 新增: 语义分析中 item 的特定背景色 --- */
+            --semantic-item-bg: #eef2f5; /* 更浅的、中性的背景色，例如淡蓝灰色 */
+            /* 或者可以尝试一个非常浅的灰色，比 --light-bg-accent 更柔和 */
+            /* --semantic-item-bg: #f0f0f0; */
+
+
+            --border-radius-sm: 0.25rem;
+            --border-radius-md: 0.375rem;
+            --border-radius-lg: 0.75rem;
+
+            --box-shadow-soft: 0 2px 4px rgba(0,0,0,0.05);
+            --box-shadow-medium: 0 4px 12px rgba(0,0,0,0.08);
+            --box-shadow-card: 0 3px 10px rgba(0,0,0,0.07);
+
+            --transition-speed: 0.2s;
+            --blur-transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            line-height: 1.65;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--page-bg);
+            color: var(--primary-text);
+        }
+
+        /* ... (其他样式保持不变) ... */
+
+        .discrimination-container {
+            max-width: 850px;
+            margin: 20px auto;
+            background-color: var(--container-bg);
+            padding: 25px 35px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--box-shadow-medium);
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .discrimination-container h1#discrimination-topic-title {
+            color: var(--primary-text);
+            margin: 0;
+            font-size: 2.1em;
+            font-weight: 600;
+        }
+        .discrimination-word {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: 20px 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--box-shadow-card);
+        }
+        .discrimination-word:last-child { margin-bottom: 0; }
+
+        .discrimination-word h2 {
+            font-size: 1.8em;
+            color: var(--accent-color);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-weight: 600;
+            transition: filter var(--blur-transition-speed) ease, opacity var(--blur-transition-speed) ease;
+        }
+        .discrimination-word h2.word-title-blurred {
+            filter: blur(5px);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .tongsu-miaoshu-container {
+            background-color: var(--light-bg);
+            padding: 12px 18px;
+            border-radius: var(--border-radius-sm);
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border-left: 3px solid var(--primary-color);
+        }
+        .tongsu-miaoshu-container .discrimination-section-title {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+        .tongsu-miaoshu-container .discrimination-content {
+            color: var(--secondary-text);
+            font-size: 0.95em;
+        }
+
+        .word-details-section .discrimination-section-title {
+            font-weight: 600;
+            color: var(--primary-text);
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--light-bg-accent);
+        }
+        .word-details-section .discrimination-content { /* 除语义分析外的其他区块内容 */
+            white-space: pre-wrap;
+            color: var(--secondary-text);
+            line-height: 1.7;
+            font-size: 1em;
+            padding-left: 5px;
+        }
+        .word-details-section ul.discrimination-content { padding-left: 25px; }
+        .word-details-section .discrimination-content li { margin-bottom: 5px; }
+
+        .semantic-analysis-section > .discrimination-section-title {
+             margin-bottom: 8px;
+        }
+        .semantic-analysis-section > .discrimination-content { /* “语义分析”内容区块的容器 */
+            background-color: var(--semantic-analysis-section-bg);
+            padding: 15px 20px; 
+            border-radius: var(--border-radius-sm);
+            margin-top: 0; 
+            line-height: 2.0; /* 进一步调整行高，增加垂直间距 */
+            color: var(--primary-text); 
+        }
+
+        /* --- 重点修改: “语义分析”中 strong 和 item 的样式 --- */
+        .semantic-analysis-section > .discrimination-content strong {
+            display: inline-block; /* 允许设置右边距 */
+            /* min-width: 90px; */ /* 可选: 如果希望标签宽度大致一致，可以设置一个最小宽度 */
+            margin-right: 10px;    /* 标签和 item 之间的横向间距 */
+            color: var(--accent-color); 
+            font-weight: 600;
+            vertical-align: baseline; /* 确保标签文字与 item 文字基线对齐 */
+        }
+
+        .semantic-analysis-section > .discrimination-content item {
+            display: inline-block; /* 使 padding 和 background 生效 */
+            background-color: var(--semantic-item-bg); /* 使用新的更浅的背景色 */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; /* 改为阅读体验更好的非衬线字体 */
+            font-size: 0.92em; /* 可微调字体大小 */
+            padding: 4px 9px;    /* 调整 item 内部文字的上下和左右间距 */
+            border-radius: var(--border-radius-sm);
+            color: var(--primary-text); /* 确保文字在浅色背景上清晰 */
+            vertical-align: baseline;   /* 与 strong 标签基线对齐 */
+            margin-bottom: 2px; /* 如果item换行，给一点点下边距，配合line-height */
+        }
+
+
+        /* 全局 item 样式 (用于辨析等其他地方) */
+        .discrimination-content item, 
+        .discrimination-details-container .discrimination-detail-item item {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: var(--light-bg-accent); /* 这是辨析等其他地方 item 的背景 */
+            margin: 3px 2px;
+            border-radius: var(--border-radius-sm);
+            color: var(--text-on-accent-bg);
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; /* 辨析等处的 item 仍可使用等宽字体 */
+            font-size: 0.9em;
+        }
+        /* 确保辨析详情中的 strong 标签不受语义分析中 strong 样式的影响 (如果需要区分) */
+        .discrimination-details-container .discrimination-detail-item strong {
+            color: var(--primary-color); /* 这是辨析中 key 的颜色 */
+        }
+
+
+        .error-message { /* ... */ }
+        .button-group { /* ... */ }
+        .back-button, .review-button { /* ... */ }
+        .review-button { /* ... */ }
+        .back-button:hover, .review-button:hover { /* ... */ }
+        .review-button:hover { /* ... */ }
+        .discrimination-section-title.collapsible-toggle { /* ... */ }
+        .discrimination-section-title.collapsible-toggle:hover { /* ... */ }
+        .discrimination-section-title.collapsible-toggle::before { /* ... */ }
+        .review-collapsible-section:not(.collapsed) > .discrimination-section-title.collapsible-toggle::before { /* ... */ }
+        .review-collapsible-section.collapsed > *:not(.discrimination-section-title) { /* ... */ }
+
+        /* 响应式设计调整 */
+        @media (max-width: 768px) {
+            /* ... (部分既有响应式样式) ... */
+            .semantic-analysis-section > .discrimination-content { padding: 12px 15px; line-height: 1.9; }
+            .semantic-analysis-section > .discrimination-content item { font-size: 0.9em; padding: 3px 7px; }
+        }
+
+        @media (max-width: 480px) {
+            /* ... (部分既有响应式样式) ... */
+            .semantic-analysis-section > .discrimination-content { padding: 10px 12px; line-height: 1.85; font-size: 0.88em; }
+            .semantic-analysis-section > .discrimination-content item { font-size: 0.9em; padding: 2px 6px; }
+             /* 全局 item 在小屏上块状显示 */
+            .discrimination-content item, .discrimination-details-container .discrimination-detail-item item { 
+                display: block; margin-top: 4px; margin-bottom: 4px; 
+            }
+             /* 但语义分析中的 item 在小屏幕上仍保持 inline-block 以便和strong标签一行对齐 */
+            .semantic-analysis-section > .discrimination-content item {
+                display: inline-block;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="discrimination-container">
+        <div class="page-header">
+            <h1 id="discrimination-topic-title">单词辨析</h1>
+            <div class="button-group">
+                <a href="/" class="back-button">&laquo; 返回主页</a>
+                <button id="goto-review-btn" class="review-button" style="display: none;">背诵单词</button>
+            </div>
+        </div>
+        <div id="discrimination-content-area">
+            <p>正在加载辨析数据...</p>
+        </div>
+    </div>
+    <script src="static/discrimination_script.js"></script>
+    </body>
+</html>

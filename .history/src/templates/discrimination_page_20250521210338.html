@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单词辨析</title>
+    <link rel="stylesheet" href="static/style.css"> <style>
+        /* 辨析页面的特定样式 */
+        body {
+            padding: 20px;
+        }
+        .discrimination-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--container-bg);
+            padding: 25px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--box-shadow-medium);
+        }
+        .discrimination-container h1 {
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .discrimination-word {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--light-bg-accent);
+        }
+        .discrimination-word:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .discrimination-word h2 {
+            font-size: 1.8em;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+        .discrimination-section-title {
+            font-weight: bold;
+            color: var(--primary-text);
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+        .discrimination-content {
+            white-space: pre-wrap; /* 保留换行和空格 */
+            padding-left: 15px;
+            color: var(--secondary-text);
+            line-height: 1.7;
+        }
+        .error-message {
+            color: red;
+            font-weight: bold;
+        }
+        .back-button {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 20px;
+            transition: background-color var(--transition-speed) ease;
+        }
+        .back-button:hover {
+            background-color: var(--primary-color-darker);
+        }
+    </style>
+</head>
+<body>
+    <div class="discrimination-container">
+        <a href="index.html" class="back-button">&laquo; 返回主页</a>
+        <h1 id="discrimination-topic-title">单词辨析</h1>
+        <div id="discrimination-content-area">
+            <p>正在加载辨析数据...</p>
+        </div>
+    </div>
+    <script src="static/discrimination_script.js"></script>
+</body>
+</html>
